@@ -5,11 +5,11 @@
 %global enable_tests 0
 
 Name:          nodejs-%{npm_name}
-Version:       3.0.3
+Version:       3.1.14
 Release:       1%{?dist}
 Summary:       Simple monitor script for use during development of a node.js app
-License:       ISC AND MIT
-URL:           https://github.com/remy/nodemon
+License:       MIT
+URL:           https://www.npmjs.com/package/nodemon
 Source0:       %{npm_name}-v%{version}-bundled.tar.gz
 
 BuildRequires: nodejs-devel
@@ -40,7 +40,7 @@ replacement wrapper for node, think of it as replacing the word "node"
 on the command line when you run your script.
 
 %prep
-%setup -q -n %{npm_name}-%{version}
+%autosetup -p1 -n package
 
 %build
 
@@ -49,7 +49,7 @@ on the command line when you run your script.
 
 %install
 mkdir -p %{buildroot}%{nodejs_sitelib}/%{npm_name}
-cp -pr doc bin lib package.json website node_modules %{buildroot}%{nodejs_sitelib}/%{npm_name}
+cp -pr doc bin lib package.json node_modules %{buildroot}%{nodejs_sitelib}/%{npm_name}
 
 mkdir -p %{buildroot}%{_bindir}
 ln -sf %{nodejs_sitelib}/%{npm_name}/bin/nodemon.js %{buildroot}%{_bindir}/nodemon
@@ -64,10 +64,15 @@ npm run test
 %endif
 
 %files
-%doc CODE_OF_CONDUCT.md doc faq.md README.md
+%doc doc README.md
 %{nodejs_sitelib}/%{npm_name}
 %{_bindir}/nodemon
 
 %changelog
+* Mon Mar 2 2026 Tomas Juhasz <tjuhasz@redhat.com> - 3.1.14-1
+- Rebase to 3.1.14
+- Switch from using remys fork as a source to npm.
+- Resolves: RHEL-208657
+
 * Fri Sep 05 2025 Jan Staněk <jstanek@redhat.com> - 3.0.3-1
 - Initial import into nodejs:24 module
