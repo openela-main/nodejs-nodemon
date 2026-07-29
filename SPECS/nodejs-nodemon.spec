@@ -5,7 +5,7 @@
 %global enable_tests 0
 
 Name:          nodejs-%{npm_name}
-Version:       3.0.1
+Version:       3.1.14
 Release:       1%{?dist}
 Summary:       Simple monitor script for use during development of a node.js app
 License:       MIT
@@ -67,6 +67,11 @@ npm run test
 %{_bindir}/nodemon
 
 %changelog
+* Mon Mar 2 2026 Tomas Juhasz <tjuhasz@redhat.com> - 3.1.14-1
+- Rebase to 3.1.14
+- Switch from using remys fork as a source to npm.
+- Resolves: RHEL-208659
+
 * Tue Nov 12 2024 Jarek Prokop <jprokop@redhat.com> - 3.0.1-1
 - Exclude ix86 arches from building.
   Related: RHEL-35991
