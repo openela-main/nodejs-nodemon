@@ -1,3 +1,13 @@
+## START: Set by rpmautospec
+## (rpmautospec version 0.6.5)
+## RPMAUTOSPEC: autorelease
+%define autorelease(e:s:pb:n) %{?-p:0.}%{lua:
+    release_number = 1;
+    base_release_number = tonumber(rpm.expand("%{?-b*}%{!?-b:1}"));
+    print(release_number + base_release_number - 1);
+}%{?-e:.%{-e*}}%{?-s:.%{-s*}}%{!?-n:%{?dist}}
+## END: Set by rpmautospec
+
 %{?nodejs_find_provides_and_requires}
 %global npm_name nodemon
 
@@ -5,8 +15,8 @@
 %global enable_tests 0
 
 Name:          nodejs-%{npm_name}
-Version:       3.0.1
-Release:       1%{?dist}
+Version:       3.1.14
+Release:       %autorelease
 Summary:       Simple monitor script for use during development of a node.js app
 License:       MIT
 URL:           https://www.npmjs.com/package/nodemon
@@ -64,6 +74,11 @@ npm run test
 %{_bindir}/nodemon
 
 %changelog
+* Mon Mar 2 2026 Tomas Juhasz <tjuhasz@redhat.com> - 3.1.14-1
+- Rebase to 3.1.14
+- Change %autosetup to setup to comply with new source pathing.
+- Resolves: RHEL-208677
+
 * Wed Aug 23 2023 Zuzana Svetlikova <zsvetlik@redhat.com> - 3.0.1-1
 - Rebase to 3.0.1
 - Resolves: CVE-2022-25883
