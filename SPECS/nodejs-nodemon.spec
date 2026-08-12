@@ -6,7 +6,7 @@
 
 Name:          nodejs-%{npm_name}
 Version:       3.1.14
-Release:       1%{?dist}
+Release:       2%{?dist}
 Summary:       Simple monitor script for use during development of a node.js app
 License:       MIT
 URL:           https://www.npmjs.com/package/nodemon
@@ -69,6 +69,11 @@ npm run test
 %{_bindir}/nodemon
 
 %changelog
+* Wed Aug 5 2026 Tomas Juhasz <tjuhasz@redhat.com> - 3.1.14-2
+- Rebase npm/brace-expansion to 5.0.9
+  Fixes: CVE-2026-69152
+  Resolves: RHEL-223789
+
 * Mon Mar 2 2026 Tomas Juhasz <tjuhasz@redhat.com> - 3.1.14-1
 - Rebase to 3.1.14
 - Switch from using remys fork as a source to npm.
