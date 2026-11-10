@@ -2,7 +2,7 @@
 ## (rpmautospec version 0.6.5)
 ## RPMAUTOSPEC: autorelease
 %define autorelease(e:s:pb:n) %{?-p:0.}%{lua:
-    release_number = 2;
+    release_number = 3;
     base_release_number = tonumber(rpm.expand("%{?-b*}%{!?-b:1}"));
     print(release_number + base_release_number - 1);
 }%{?-e:.%{-e*}}%{?-s:.%{-s*}}%{!?-n:%{?dist}}
@@ -22,7 +22,16 @@ License:       MIT
 URL:           https://www.npmjs.com/package/nodemon
 Source0:       %{npm_name}-v%{version}-bundled.tar.gz
 
-Patch1:        0001-deps-glob-parent-Resolve-ReDoS-vulnerability-from-CV.patch
+Patch0:        0001-deps-glob-parent-Resolve-ReDoS-vulnerability-from-CV.patch
+# https://github.com/juliangruber/brace-expansion/commit/6735c94873ca570bcdd6a0690033bdd3126379d3
+Patch1:        nodejs-nodemon-3.1.14-CVE-2026-102276.patch
+
+# https://github.com/isaacs/minimatch/commit/77a0f5c4b80bdc641c3c930a1d9edf5ad2db57f8
+Patch2:        nodejs-nodemon-3.1.14-CVE-2026-118764.patch
+
+# https://issues.redhat.com/browse/RHEL-281579
+# https://github.com/juliangruber/brace-expansion/commit/935d78f32f335b2ff76578e5c5e877d31ae9888c
+Patch3:        nodejs-nodemon-3.1.14-CVE-2026-102278.patch
 
 BuildRequires: nodejs-devel
 BuildRequires: nodejs-packaging
@@ -74,6 +83,11 @@ npm run test
 %{_bindir}/nodemon
 
 %changelog
+* Mon Nov 2 2026 Tomas Juhasz <tjuhasz@redhat.com> - 3.1.14-3
+  Patches for brace-expansions and minimatch
+  Fixes: CVE-2026-102278 CVE-2026-102276 CVE-2026-118764
+  Resolves: RHEL-296560 RHEL-282236 RHEL-281705
+
 * Mon Mar 2 2026 Tomas Juhasz <tjuhasz@redhat.com> - 3.1.14-1
 - Rebase to 3.1.14
 - Change %autosetup to setup to comply with new source pathing.
