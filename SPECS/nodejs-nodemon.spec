@@ -6,13 +6,22 @@
 
 Name:          nodejs-%{npm_name}
 Version:       3.1.14
-Release:       2%{?dist}
+Release:       3%{?dist}
 Summary:       Simple monitor script for use during development of a node.js app
 License:       MIT
 URL:           https://www.npmjs.com/package/nodemon
 Source0:       %{npm_name}-v%{version}-bundled.tar.gz
 
-Patch1:        0001-deps-glob-parent-Resolve-ReDoS-vulnerability-from-CV.patch
+Patch0:        0001-deps-glob-parent-Resolve-ReDoS-vulnerability-from-CV.patch
+# https://github.com/juliangruber/brace-expansion/commit/6735c94873ca570bcdd6a0690033bdd3126379d3
+Patch1:        nodejs-nodemon-3.1.14-CVE-2026-102276.patch
+
+# https://github.com/isaacs/minimatch/commit/77a0f5c4b80bdc641c3c930a1d9edf5ad2db57f8
+Patch2:        nodejs-nodemon-3.1.14-CVE-2026-118764.patch
+
+# https://issues.redhat.com/browse/RHEL-281579
+# https://github.com/juliangruber/brace-expansion/commit/935d78f32f335b2ff76578e5c5e877d31ae9888c
+Patch3:        nodejs-nodemon-3.1.14-CVE-2026-102278.patch
 
 BuildRequires: nodejs-devel
 BuildRequires: nodejs-packaging
@@ -67,6 +76,11 @@ npm run test
 %{_bindir}/nodemon
 
 %changelog
+* Mon Nov 2 2026 Tomas Juhasz <tjuhasz@redhat.com> - 3.1.14-3
+  Patches for brace-expansions and minimatch
+  Fixes: CVE-2026-102278 CVE-2026-102276 CVE-2026-118764
+  Resolves: RHEL-281630 RHEL-281863 RHEL-296549
+
 * Wed Aug 5 2026 Tomas Juhasz <tjuhasz@redhat.com> - 3.1.14-2
 - Rebase npm/brace-expansion to 5.0.9
   Fixes: CVE-2026-69152
